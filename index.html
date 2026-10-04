@@ -1,16 +1,56 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>我的第一个云服务器网页</title>
-    <style>
-        body { font-family: sans-serif; text-align: center; margin-top: 100px; background-color: #f0f4f8; }
-        h1 { color: #2563eb; }
-        p { color: #475569; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111d25">
+  <meta name="description" content="苔原旅人：一场免费的原创像素冒险。穿过森林、遗迹与星夜，找回森林的光。">
+  <title>苔原旅人 · Mossbound</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="game.js" defer></script>
 </head>
 <body>
-    <h1>🎉 太棒了！我的网页成功上线了！</h1>
-    <p>这是我的第一个 Northflank 部署项目。</p>
+  <main class="shell">
+    <header class="masthead">
+      <a class="brand" href="./" aria-label="苔原旅人首页"><span class="brand-icon" aria-hidden="true">✦</span><span>MOSSBOUND<small>苔原旅人</small></span></a>
+      <div class="edition"><span class="status-dot"></span> 小小世界，大大冒险 <span class="edition-number">VOL. 01</span></div>
+    </header>
+    <section class="intro" aria-labelledby="page-title">
+      <div><p class="eyebrow">AN ORIGINAL PIXEL ADVENTURE</p><h1 id="page-title">下一段冒险，<span>从一跃开始。</span></h1><p class="subtitle">穿过长满苔藓的遗迹，追着微光，找回森林的春天。</p></div>
+      <div class="intro-note"><span class="note-star">✧</span><span>无需下载 · 即刻出发<br><small>3 个世界 / 一位勇敢的旅人</small></span></div>
+    </section>
+    <section class="game-card" aria-label="像素冒险游戏">
+      <div class="game-toolbar">
+        <div class="level-label"><span id="level-number">01</span><div><small id="level-region">THE VERDANT OUTSKIRTS</small><strong id="level-name">苔光森林</strong></div></div>
+        <div class="hud"><span class="health" id="health" aria-label="3 条生命">♥ ♥ ♥</span><span class="gem-stat"><span aria-hidden="true">◆</span> <b id="gem-count">00</b><small id="gem-total">/ 00</small></span><span class="time-stat" id="timer">00:00</span></div>
+        <div class="toolbar-actions"><button id="sound-button" class="icon-button" aria-label="开启音效" title="开启音效">♪<span class="sound-slash">/</span></button><button id="pause-button" class="icon-button" aria-label="暂停游戏" title="暂停 · Esc">Ⅱ</button><button id="fullscreen-button" class="icon-button" aria-label="全屏" title="全屏">⛶</button></div>
+      </div>
+      <div class="viewport" id="viewport">
+        <canvas id="game" width="480" height="270" tabindex="0" aria-label="横版像素游戏。方向键或 A、D 移动，空格、W 或向上键跳跃，Esc 暂停。"></canvas>
+        <div class="scene-vignette" aria-hidden="true"></div>
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+        <button id="fullscreen-pause" class="fullscreen-pause icon-button" aria-label="全屏暂停">Ⅱ</button>
+        <div class="overlay" id="overlay">
+          <div class="menu" id="menu">
+            <p class="menu-kicker" id="menu-kicker">THE FOREST IS CALLING</p><div class="menu-emblem" aria-hidden="true">✦</div>
+            <h2 id="menu-title">苔原旅人</h2><p class="menu-copy" id="menu-copy">森林的光散落在古老的路上。<br>背好行囊，去把它们带回来。</p>
+            <button class="primary-button" id="play-button">开始冒险 <span aria-hidden="true">→</span></button>
+            <button class="secondary-button" id="secondary-button" hidden>重新开始本关</button>
+            <p class="menu-footnote" id="menu-footnote">按 Enter 开始 · 戴上耳机，更有氛围</p>
+          </div>
+        </div>
+        <div class="touch-controls" id="touch-controls" aria-label="触屏操作">
+          <div class="direction-controls"><button data-control="left" aria-label="向左移动">◀</button><button data-control="right" aria-label="向右移动">▶</button></div>
+          <button class="jump-control" data-control="jump" aria-label="跳跃">↟<small>跳跃</small></button>
+        </div>
+      </div>
+      <div class="game-footer"><span><span class="live-dot"></span><span id="game-status">准备好探索了吗？</span></span><div class="progress-track" aria-label="关卡进度"><i class="active"></i><i></i><i></i></div><span class="best-stat">最快通关 <b id="best-time">--:--</b></span></div>
+    </section>
+    <section class="below-game" aria-label="游戏说明">
+      <div class="controls-guide"><p class="eyebrow">YOUR ADVENTURE KIT</p><div class="key-list"><span><kbd>A</kbd><kbd>D</kbd> / <kbd>←</kbd><kbd>→</kbd> 移动</span><span><kbd>SPACE</kbd> 跳跃</span><span><kbd>ESC</kbd> 暂停</span><span><kbd>R</kbd> 重玩本关</span></div><p class="control-tip">轻按小跳，长按高跳 · 踩在怪物头上可以击败它 · 手机可用屏幕按键</p></div>
+      <div class="mission-note"><span aria-hidden="true">◆</span><div><strong>每一束微光，都值得寻找。</strong><p>收集宝石，点亮检查点，抵达每个世界的古老石门。</p></div></div>
+    </section>
+    <footer class="site-footer"><span>MADE FOR THE LITTLE ADVENTURER IN YOU.</span><span>原创像素世界 <span class="footer-spark">✦</span> 旅途愉快</span></footer>
+  </main>
 </body>
 </html>

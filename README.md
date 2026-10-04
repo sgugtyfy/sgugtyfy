@@ -1,16 +1,26 @@
-## Hi there 👋
+# 苔原旅人 · Mossbound
 
-<!--
-**sgugtyfy/sgugtyfy** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+原创像素横版冒险小游戏。穿过苔光森林、落日遗迹与星眠山谷，收集微光、踩倒怪物、点亮检查点，抵达古老石门。
 
-Here are some ideas to get you started:
+## 操作
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+| 操作 | 电脑 | 手机 / 平板 |
+| --- | --- | --- |
+| 移动 | A / D 或 ← / → | 左右屏幕按钮 |
+| 跳跃 | Space / W / ↑ | 跳跃按钮 |
+| 暂停 / 继续 | Esc 或暂停按钮 | 暂停按钮 |
+| 重玩本关 | R | 暂停后选择重玩 |
+
+轻按跳跃可以小跳，长按可以高跳。每关有三条生命；掉进深坑、碰到尖刺或怪物会消耗生命，并回到已点亮的检查点。踩在怪物头上可以击败它。宝石是可选收集物，无需收齐即可过关。音效默认关闭，可通过 ♪ 按钮开启。全屏可使用右上角按钮。
+
+最快完整通关时间保存在当前浏览器的 localStorage 中。游戏没有账号、服务器排行榜或跨设备存档。
+
+## 本地运行
+
+直接用浏览器打开 `index.html` 即可试玩，无需安装依赖。
+
+## Northflank 部署
+
+沿用根目录 Dockerfile，通过 nginx:alpine 提供静态网页。公开 HTTP 端口为 **80**。在 Northflank 中开启绑定分支的自动构建 / 部署后，推送新版本即可更新网站。
+
+游戏逻辑与像素绘图全部在访客浏览器中运行，没有后台依赖或外部素材请求，适合 0.2 vCPU / 512 MB 的小实例。所有人物与场景均由 Canvas 绘制。
