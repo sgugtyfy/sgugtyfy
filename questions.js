@@ -4422,7 +4422,7 @@ window.QUESTION_BANK = {
       "type": "填空题",
       "stem": "文献综述是博士士论文的重要附件，字数一般要求为不少于____字",
       "options": [],
-      "answer": "8000",
+      "answer": "6000",
       "note": null,
       "sources": [
         {
@@ -4432,7 +4432,7 @@ window.QUESTION_BANK = {
           "lineStart": 18,
           "lineEnd": 19,
           "url": "https://github.com/Oldmemory1/BIT-Information-Retrieval-and-Scientific-Writing/blob/main/6.5%E4%B9%A0%E9%A2%98.txt#L18-L19",
-          "raw": "7.文献综述是博士士论文的重要附件，字数一般要求为不少于[8000]字"
+          "raw": "7.文献综述是博士士论文的重要附件，字数一般要求为不少于[6000]字"
         }
       ],
       "index": 182
