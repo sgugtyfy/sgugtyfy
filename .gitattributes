@@ -1,0 +1,2 @@
+# Keep imported source bytes unchanged so their upstream Git blob hashes verify.
+sources/*.txt -text

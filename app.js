@@ -1,6 +1,6 @@
 'use strict';
 (() => {
-  const { categories, questions } = window.QUESTION_BANK;
+  const { meta: bankMeta, categories, questions } = window.QUESTION_BANK;
   const list = document.querySelector('#question-list');
   const search = document.querySelector('#search');
   const dialog = document.querySelector('#source-dialog');
@@ -13,7 +13,7 @@
   let answersHidden = false;
   let activeTerm = '';
   let sourceOpener;
-  const sourceNames = { csdn: 'CSDN 截图', zhihu: '知乎截图' };
+  const categoryNames = new Map(categories.map(c => [c.id, `${c.code} ${c.title}`]));
 
   function element(tag, className, text) {
     const node = document.createElement(tag);
@@ -35,9 +35,9 @@
     const meta = element('div', 'question-meta');
     meta.append(element('span', 'question-number', String(q.index).padStart(3, '0')));
     meta.append(element('span', `type-tag ${q.type === '判断题' ? 'judge' : q.type === '填空题' ? 'fill' : ''}`, q.type));
-    if (q.fragment) meta.append(element('span', '', '原图截断'));
-    const source = button('source-button', '查看原图 ↗', 'source', q.id);
-    source.setAttribute('aria-label', `查看第 ${q.index} 题的截图原文`);
+    meta.append(element('span', 'chapter-reference', `${q.sources[0].chapter} · 原第 ${q.sources[0].number} 题`));
+    const source = button('source-button', '查看原文 ↗', 'source', q.id);
+    source.setAttribute('aria-label', `查看第 ${q.index} 题的来源原文`);
     meta.append(source);
     const stem = element('h3', 'question-stem', q.stem);
     stem.id = `${q.id}-stem`;
@@ -58,13 +58,13 @@
     }
     if (q.note) card.append(element('p', 'question-note', q.note));
     const answerRow = element('div', 'answer-row');
-    const answer = element('span', `answer-text${q.answer ? '' : ' missing'}`, q.answer || '原图未提供答案');
+    const answer = element('span', `answer-text${['简答题', '填空题'].includes(q.type) ? ' long-answer' : ''}`, q.type === '排序题' ? [...q.answer].join(' → ') : q.answer);
     answer.id = `${q.id}-answer`;
     const toggle = button('single-answer-toggle', '收起', 'answer', q.id);
     toggle.setAttribute('aria-expanded', 'true');
     toggle.setAttribute('aria-controls', answer.id);
     toggle.setAttribute('aria-label', `收起第 ${q.index} 题答案`);
-    answerRow.append(element('span', 'answer-label', '原图答案'), answer, toggle);
+    answerRow.append(element('span', 'answer-label', '参考答案'), answer, toggle);
     card.append(answerRow);
     nodes.set(q.id, { card, searchable, toggle });
     return card;
@@ -73,6 +73,7 @@
   document.querySelector('#total-count').textContent = questions.length;
   document.querySelector('#sidebar-total').textContent = questions.length;
   document.querySelector('#topic-count').textContent = categories.length;
+  document.querySelector('#source-summary').textContent = `${bankMeta.sourceFiles} 份章节习题 · ${bankMeta.sourceCount} 道原题 · 来源快照 ${bankMeta.importedOn}`;
   const nav = document.querySelector('#topic-nav');
   for (const [i, category] of categories.entries()) {
     const group = questions.filter(q => q.category === category.id);
@@ -83,13 +84,14 @@
     h2.id = `${category.id}-title`;
     section.setAttribute('aria-labelledby', h2.id);
     const count = element('span', 'section-count', `${group.length} 题`);
-    heading.append(element('span', 'section-number', String(i + 1).padStart(2, '0')), h2, count, element('span', 'section-line'));
+    heading.append(element('span', 'section-number', category.code), h2, count, element('span', 'section-line'));
     section.append(heading, ...group.map(renderCard));
     list.append(section);
     sections.set(category.id, { section, count, group });
     const link = element('a', 'topic-link');
     link.href = `#topic-${category.id}`;
-    link.append(element('span', 'topic-index', String(i + 1).padStart(2, '0')), element('span', '', category.title), element('span', 'count', group.length));
+    link.title = `${category.code}习题 · ${group.length}题`;
+    link.append(element('span', 'topic-index', category.code), element('span', '', category.title), element('span', 'count', group.length));
     nav.append(link);
     topicLinks.set(category.id, link);
   }
@@ -114,7 +116,7 @@
       let groupCount = 0;
       for (const q of group) {
         const { card, searchable } = nodes.get(q.id);
-        const matches = (selectedType === 'all' || selectedType === q.type) && (!term || `${q.stem} ${q.options.join(' ')} ${q.note || ''}`.toLocaleLowerCase().includes(term));
+        const matches = (selectedType === 'all' || selectedType === q.type) && (!term || `${q.stem} ${q.options.join(' ')} ${q.note || ''} ${categoryNames.get(q.category)}`.toLocaleLowerCase().includes(term));
         card.hidden = !matches;
         if (matches) groupCount++;
         if (activeTerm !== term) searchable.forEach(node => highlight(node, term));
@@ -165,19 +167,24 @@
   });
   function showSource(q, opener) {
     sourceOpener = opener;
-    document.querySelector('#source-title').textContent = `第 ${String(q.index).padStart(3, '0')} 题 · 原图对照`;
-    const figures = q.sources.map(source => {
-      const figure = element('figure');
-      const img = element('img');
-      img.src = source.image;
-      img.alt = `${sourceNames[source.source]}，${q.category === 'sci' ? '对应题目' : `原第 ${source.number} 题`}截图，包含原题文字及可见答案`;
-      img.addEventListener('error', () => {
-        img.replaceWith(element('p', 'image-error', '原图加载失败，请刷新页面后重试。'));
-      }, { once: true });
-      figure.append(element('figcaption', '', `${sourceNames[source.source]}${q.category === 'sci' ? '' : ` · 原第 ${source.number} 题`}`), img);
-      return figure;
+    document.querySelector('#source-title').textContent = `第 ${String(q.index).padStart(3, '0')} 题 · 来源原文`;
+    const references = q.sources.map(source => {
+      const section = element('section', 'source-reference');
+      const heading = element('h3', '', `${source.file} · 原第 ${source.number} 题`);
+      const text = element('pre', 'source-raw', source.raw);
+      const links = element('div', 'source-links');
+      const upstream = element('a', '', '在 GitHub 查看原文 ↗');
+      upstream.href = source.url;
+      upstream.target = '_blank';
+      upstream.rel = 'noopener noreferrer';
+      const local = element('a', '', '下载本章原始题库 ↓');
+      local.href = `sources/${encodeURIComponent(source.file)}`;
+      local.download = source.file;
+      links.append(upstream, local);
+      section.append(heading, text, links);
+      return section;
     });
-    document.querySelector('#source-images').replaceChildren(...figures);
+    document.querySelector('#source-content').replaceChildren(...references);
     dialog.showModal();
     dialog.scrollTop = 0;
     document.body.style.overflow = 'hidden';

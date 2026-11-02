@@ -1,0 +1,108 @@
+{
+  "repository": "https://github.com/Oldmemory1/BIT-Information-Retrieval-and-Scientific-Writing",
+  "importedOn": "2026-11-02",
+  "chapters": [
+    {
+      "id": "chapter-1",
+      "code": "1.2",
+      "title": "课程导论",
+      "file": "1.2习题.txt",
+      "sha": "71e2ade195edc17e70fbf4cbaed886e71fd08ff9",
+      "count": 4
+    },
+    {
+      "id": "chapter-2",
+      "code": "2.9",
+      "title": "信息检索基础",
+      "file": "2.9习题.txt",
+      "sha": "6f8b05fb0d3d41f0c07d8143546a5d342ecc1cb4",
+      "count": 35
+    },
+    {
+      "id": "chapter-3",
+      "code": "3.5",
+      "title": "数据库与检索策略",
+      "file": "3.5习题.txt",
+      "sha": "0d3246ab509a76f94acc5e4eb18caaee4685bd06",
+      "count": 87
+    },
+    {
+      "id": "chapter-4",
+      "code": "4.6",
+      "title": "科学图谱与引文分析",
+      "file": "4.6习题.txt",
+      "sha": "f4b383b99ffdbd41b85d92b939cdecc39e0ead81",
+      "count": 34
+    },
+    {
+      "id": "chapter-5",
+      "code": "5.6",
+      "title": "文献管理工具",
+      "file": "5.6习题.txt",
+      "sha": "4e5704d0d22d27bd4f59fc7e1147ca1c27a6b725",
+      "count": 15
+    },
+    {
+      "id": "chapter-6",
+      "code": "6.5",
+      "title": "文献综述",
+      "file": "6.5习题.txt",
+      "sha": "bcf5fcf37077b2e7dcb2ef84d8e8a54136de77fc",
+      "count": 16
+    },
+    {
+      "id": "chapter-7",
+      "code": "7.6",
+      "title": "开题报告与研究设计",
+      "file": "7.6习题.txt",
+      "sha": "9d75296c0ddd70e4623c1d6d4d729b68cda210bf",
+      "count": 20
+    },
+    {
+      "id": "chapter-8",
+      "code": "8.6",
+      "title": "学位论文",
+      "file": "8.6习题.txt",
+      "sha": "9f21584cfc330aac5fdaab1bf4714f81afad029a",
+      "count": 19
+    },
+    {
+      "id": "chapter-9",
+      "code": "9.4",
+      "title": "科技论文写作与投稿",
+      "file": "9.4习题.txt",
+      "sha": "7763b82bab9e33a974e34ffc455c16e0ed183016",
+      "count": 154,
+      "numberingExceptions": [
+        {
+          "position": 46,
+          "number": 56
+        }
+      ]
+    },
+    {
+      "id": "chapter-10",
+      "code": "10.7",
+      "title": "专利与知识产权",
+      "file": "10.7习题.txt",
+      "sha": "394119ff709343f9118f91afe6d2495901b4fd0c",
+      "count": 41
+    },
+    {
+      "id": "chapter-11",
+      "code": "11.7",
+      "title": "科研图表",
+      "file": "11.7习题.txt",
+      "sha": "b8b533b5f09f5c64802aaeb66113b01d421d3747",
+      "count": 24
+    },
+    {
+      "id": "chapter-12",
+      "code": "12.6",
+      "title": "学术规范与诚信",
+      "file": "12.6习题.txt",
+      "sha": "a1b76cb6fd8911d82fcdcd4a7945166437c82a9d",
+      "count": 26
+    }
+  ]
+}
