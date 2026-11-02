@@ -58,7 +58,7 @@
     }
     if (q.note) card.append(element('p', 'question-note', q.note));
     const answerRow = element('div', 'answer-row');
-    const answer = element('span', `answer-text${['简答题', '填空题'].includes(q.type) ? ' long-answer' : ''}`, q.type === '排序题' ? [...q.answer].join(' → ') : q.answer);
+    const answer = element('span', `answer-text${['简答题', '填空题'].includes(q.type) ? ' long-answer' : ''}`, q.answer);
     answer.id = `${q.id}-answer`;
     const toggle = button('single-answer-toggle', '收起', 'answer', q.id);
     toggle.setAttribute('aria-expanded', 'true');

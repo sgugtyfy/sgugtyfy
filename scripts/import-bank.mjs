@@ -58,7 +58,7 @@ export function importBank() {
         answer = choices.map(match => match[1].replace(/[\s,，、]/g, '')).join('');
         if (!answer) throw new Error(`Choice has no answer: ${chapter.file} #${block.number}`);
         stem = stem.replace(/[（(]\s*([A-J](?:[\s,，、]*[A-J])*)\s*[)）]/g, (whole, value) => isChoiceAnswer(value) ? '（ ）' : whole);
-        type = answer.length > 1 && /排序|顺序排列/.test(stem) ? '排序题' : answer.length > 1 ? '多选题' : '单选题';
+        type = answer.length > 1 ? '多选题' : '单选题';
         if (new Set(answer).size !== answer.length) warnings.push(`${chapter.file} #${block.number}: repeated answer letter`);
         for (const letter of answer) if (!labels.includes(letter)) throw new Error(`Answer outside choices: ${chapter.file} #${block.number}: ${answer}`);
       } else if (boolean.length) {

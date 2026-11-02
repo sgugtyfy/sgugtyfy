@@ -12,7 +12,7 @@ assert.equal(questions.length, 475);
 assert.equal(categories.length, 12);
 assert.equal(meta.sourceCount, 475);
 const ids = new Set(), sourceLines = new Set();
-const types = ['单选题', '多选题', '判断题', '填空题', '简答题', '排序题'];
+const types = ['单选题', '多选题', '判断题', '填空题', '简答题'];
 for (const [i, q] of questions.entries()) {
   assert.equal(q.index, i + 1);
   assert(!ids.has(q.id), `Duplicate ID: ${q.id}`);
@@ -20,7 +20,7 @@ for (const [i, q] of questions.entries()) {
   assert(categories.some(c => c.id === q.category));
   assert(types.includes(q.type), `Unknown type: ${q.id}`);
   assert(q.stem && q.answer, `Missing stem/answer: ${q.id}`);
-  if (['单选题', '多选题', '排序题'].includes(q.type)) {
+  if (['单选题', '多选题'].includes(q.type)) {
     assert(q.options.length >= 2 && q.options.every(s => s.trim()), `Missing options: ${q.id}`);
     for (const letter of q.answer) assert(letter >= 'A' && letter.charCodeAt(0) - 65 < q.options.length, `Answer outside choices: ${q.id}`);
     if (q.type === '单选题') assert.equal(q.answer.length, 1);
@@ -40,6 +40,8 @@ assert.equal(sourceLines.size, 475);
 const get = id => questions.find(q => q.id === id);
 assert.equal(get('chapter-10-q14').answer, 'EADBC', 'Preserve product claim ordering');
 assert.equal(get('chapter-10-q19').answer, 'CEADB', 'Preserve patent writing ordering');
+assert.equal(get('chapter-10-q14').type, '多选题', 'Flow-order wording remains a multiple-choice question');
+assert.equal(get('chapter-10-q19').type, '多选题', 'Sequence wording remains a multiple-choice question');
 assert.equal(get('chapter-3-q51').type, '单选题', 'Database sort preference is a single-choice question');
 assert(get('chapter-9-q33').stem.includes('III'), 'Keep chemical oxidation state in stem');
 assert.equal(get('chapter-9-q33').answer, 'D', 'Roman numerals are not answer choices');
@@ -52,4 +54,4 @@ assert(fs.readFileSync('.gitattributes', 'utf8').includes('sources/*.txt -text')
 for (const file of ['index.html', 'style.css', 'app.js', 'questions.js', 'favicon.svg']) assert(fs.existsSync(file));
 assert(!/CSDN|原图|截图/.test(fs.readFileSync('index.html', 'utf8')), 'Old source text remains');
 assert(!fs.readFileSync('Dockerfile', 'utf8').includes('game.js'));
-console.log(`Verified ${questions.length} questions, ${categories.length} chapters, ${sourceLines.size} original source blocks, all 6 question types and source hashes.`);
+console.log(`Verified ${questions.length} questions, ${categories.length} chapters, ${sourceLines.size} original source blocks, all 5 question types and source hashes.`);

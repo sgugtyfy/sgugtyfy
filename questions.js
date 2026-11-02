@@ -9676,7 +9676,7 @@ window.QUESTION_BANK = {
     {
       "id": "chapter-10-q14",
       "category": "chapter-10",
-      "type": "排序题",
+      "type": "多选题",
       "stem": "对下列产品权利要求撰写的流程排序（ ）",
       "options": [
         "确定解决技术问题的全部必要技术特征",
@@ -9804,7 +9804,7 @@ window.QUESTION_BANK = {
     {
       "id": "chapter-10-q19",
       "category": "chapter-10",
-      "type": "排序题",
+      "type": "多选题",
       "stem": "将下列专利撰写流程按照正确的顺序排列（ ）",
       "options": [
         "确定最接近的现有技术",
