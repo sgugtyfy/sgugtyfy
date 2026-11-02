@@ -1,56 +1,50 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#111d25">
-  <meta name="description" content="苔原旅人：一场免费的原创像素冒险。穿过森林、遗迹与星夜，找回森林的光。">
-  <title>苔原旅人 · Mossbound</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7f4">
+  <meta name="description" content="信息检索与科研写作复习题库。所有题目一次展开，支持搜索、题型筛选、答案显隐及原图核对。">
+  <title>学研题库 · 信息检索与科研写作</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
-  <script src="game.js" defer></script>
+  <script src="questions.js" defer></script>
+  <script src="app.js" defer></script>
 </head>
 <body>
-  <main class="shell">
-    <header class="masthead">
-      <a class="brand" href="./" aria-label="苔原旅人首页"><span class="brand-icon" aria-hidden="true">✦</span><span>MOSSBOUND<small>苔原旅人</small></span></a>
-      <div class="edition"><span class="status-dot"></span> 小小世界，大大冒险 <span class="edition-number">VOL. 01</span></div>
-    </header>
-    <section class="intro" aria-labelledby="page-title">
-      <div><p class="eyebrow">AN ORIGINAL PIXEL ADVENTURE</p><h1 id="page-title">下一段冒险，<span>从一跃开始。</span></h1><p class="subtitle">穿过长满苔藓的遗迹，追着微光，找回森林的春天。</p></div>
-      <div class="intro-note"><span class="note-star">✧</span><span>无需下载 · 即刻出发<br><small>3 个世界 / 一位勇敢的旅人</small></span></div>
-    </section>
-    <section class="game-card" aria-label="像素冒险游戏">
-      <div class="game-toolbar">
-        <div class="level-label"><span id="level-number">01</span><div><small id="level-region">THE VERDANT OUTSKIRTS</small><strong id="level-name">苔光森林</strong></div></div>
-        <div class="hud"><span class="health" id="health" aria-label="3 条生命">♥ ♥ ♥</span><span class="gem-stat"><span aria-hidden="true">◆</span> <b id="gem-count">00</b><small id="gem-total">/ 00</small></span><span class="time-stat" id="timer">00:00</span></div>
-        <div class="toolbar-actions"><button id="sound-button" class="icon-button" aria-label="开启音效" title="开启音效">♪<span class="sound-slash">/</span></button><button id="pause-button" class="icon-button" aria-label="暂停游戏" title="暂停 · Esc">Ⅱ</button><button id="fullscreen-button" class="icon-button" aria-label="全屏" title="全屏">⛶</button></div>
-      </div>
-      <div class="viewport" id="viewport">
-        <canvas id="game" width="480" height="270" tabindex="0" aria-label="横版像素游戏。方向键或 A、D 移动，空格、W 或向上键跳跃，Esc 暂停。"></canvas>
-        <div class="scene-vignette" aria-hidden="true"></div>
-        <div class="toast" id="toast" role="status" aria-live="polite"></div>
-        <button id="fullscreen-pause" class="fullscreen-pause icon-button" aria-label="全屏暂停">Ⅱ</button>
-        <div class="overlay" id="overlay">
-          <div class="menu" id="menu">
-            <p class="menu-kicker" id="menu-kicker">THE FOREST IS CALLING</p><div class="menu-emblem" aria-hidden="true">✦</div>
-            <h2 id="menu-title">苔原旅人</h2><p class="menu-copy" id="menu-copy">森林的光散落在古老的路上。<br>背好行囊，去把它们带回来。</p>
-            <button class="primary-button" id="play-button">开始冒险 <span aria-hidden="true">→</span></button>
-            <button class="secondary-button" id="secondary-button" hidden>重新开始本关</button>
-            <p class="menu-footnote" id="menu-footnote">按 Enter 开始 · 戴上耳机，更有氛围</p>
-          </div>
+  <a class="skip-link" href="#question-list">跳到题目</a>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="学研题库首页"><span class="brand-mark" aria-hidden="true">研</span><span>学研题库<small>STUDY NOTES</small></span></a>
+    <div class="header-subtitle">信息检索 <span>／</span> 科研写作</div>
+    <span class="header-note"><i></i> 专注复习，慢慢掌握</span>
+  </header>
+  <main class="layout" id="top">
+    <aside class="sidebar" aria-label="专题目录">
+      <div class="sidebar-heading"><span class="eyebrow">CONTENTS</span><h2>复习目录</h2></div>
+      <a class="all-link active" href="#question-list"><span class="grid-icon" aria-hidden="true">▦</span> 全部题目 <span id="sidebar-total" class="count">—</span></a>
+      <nav id="topic-nav" aria-label="跳转到专题"></nav>
+      <div class="sidebar-note"><span aria-hidden="true">↳</span><p>一页看完，随时查找。<br><small>题目已合并去重，无需翻页。</small></p></div>
+    </aside>
+    <div class="main-column">
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy"><p class="eyebrow"><span class="tiny-line"></span> A LITTLE PROGRESS, EVERY DAY</p><h1 id="page-title">信息检索与<br><span>科研写作题库</span></h1><p class="hero-description">让零散的知识，变成有序的积累。<br>题干、选项与原图答案，全部整理在这一页。</p></div>
+        <div class="hero-art" aria-hidden="true"><div class="paper paper-back"></div><div class="paper paper-front"><span class="paper-label">KNOWLEDGE / 01</span><span class="paper-title">学而有序<br>温故知新</span><span class="paper-rule"></span><span class="paper-lines"></span><span class="paper-seal">研</span></div><span class="art-star">✳</span><span class="art-caption">KEEP LEARNING.</span></div>
+        <div class="stats"><div><strong id="total-count">—</strong><span>道整理题目</span></div><div><strong id="topic-count">11</strong><span>个复习专题</span></div><div><strong>01</strong><span>页完整呈现</span></div><p>从检索基础到学术规范<br><span>把每一题，读得更清楚。</span></p></div>
+      </section>
+      <section class="study-area" aria-label="全部题目">
+        <div class="study-toolbar">
+          <div class="search-row"><label class="search-box"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><input id="search" type="search" placeholder="搜索题干、选项或知识点…" autocomplete="off" aria-label="搜索题目"><kbd aria-hidden="true">/</kbd></label><button id="answer-toggle" class="button" aria-pressed="false"><span aria-hidden="true">◉</span><span>隐藏答案</span></button><button id="print-button" class="button print-button"><span aria-hidden="true">⎙</span><span>打印</span></button></div>
+          <div class="filter-row"><div class="type-filters" role="group" aria-label="按题型筛选"><button class="filter active" data-type="all" aria-pressed="true">全部题型</button><button class="filter" data-type="单选题" aria-pressed="false">单选</button><button class="filter" data-type="多选题" aria-pressed="false">多选</button><button class="filter" data-type="判断题" aria-pressed="false">判断</button><button class="filter" data-type="填空题" aria-pressed="false">填空</button></div><span id="result-count" class="result-count" role="status" aria-live="polite">正在整理题目…</span></div>
         </div>
-        <div class="touch-controls" id="touch-controls" aria-label="触屏操作">
-          <div class="direction-controls"><button data-control="left" aria-label="向左移动">◀</button><button data-control="right" aria-label="向右移动">▶</button></div>
-          <button class="jump-control" data-control="jump" aria-label="跳跃">↟<small>跳跃</small></button>
-        </div>
-      </div>
-      <div class="game-footer"><span><span class="live-dot"></span><span id="game-status">准备好探索了吗？</span></span><div class="progress-track" aria-label="关卡进度"><i class="active"></i><i></i><i></i></div><span class="best-stat">最快通关 <b id="best-time">--:--</b></span></div>
-    </section>
-    <section class="below-game" aria-label="游戏说明">
-      <div class="controls-guide"><p class="eyebrow">YOUR ADVENTURE KIT</p><div class="key-list"><span><kbd>A</kbd><kbd>D</kbd> / <kbd>←</kbd><kbd>→</kbd> 移动</span><span><kbd>SPACE</kbd> 跳跃</span><span><kbd>ESC</kbd> 暂停</span><span><kbd>R</kbd> 重玩本关</span></div><p class="control-tip">轻按小跳，长按高跳 · 踩在怪物头上可以击败它 · 手机可用屏幕按键</p></div>
-      <div class="mission-note"><span aria-hidden="true">◆</span><div><strong>每一束微光，都值得寻找。</strong><p>收集宝石，点亮检查点，抵达每个世界的古老石门。</p></div></div>
-    </section>
-    <footer class="site-footer"><span>MADE FOR THE LITTLE ADVENTURER IN YOU.</span><span>原创像素世界 <span class="footer-spark">✦</span> 旅途愉快</span></footer>
+        <div class="source-notice"><span aria-hidden="true">ⓘ</span><p>答案按截图保留；原图未给出的答案标为「未提供」。每题可查看原图核对。</p></div>
+        <div id="question-list" tabindex="-1"></div>
+        <div id="empty-state" class="empty-state" hidden><span aria-hidden="true">⌕</span><h2>暂时没有找到相关题目</h2><p>换一个关键词，或试试其他题型。</p><button id="reset-filters" class="button">清除搜索与筛选</button></div>
+        <noscript><p class="source-notice">请开启浏览器 JavaScript 以显示和搜索全部题目。</p></noscript>
+      </section>
+      <footer class="site-footer"><span>学研题库 <span class="footer-dot">·</span> 日积月累，学有所获。</span><p>题目整理自所提供的 CSDN、知乎截图。原图中的题号按来源保留。<br>截图有截断或不完整之处已单独注明；原答案照录，未另行校订。</p></footer>
+    </div>
   </main>
+  <a class="back-top" href="#top" aria-label="返回顶部">↑<span>顶部</span></a>
+  <dialog id="source-dialog" aria-labelledby="source-title"><div class="dialog-header"><div><span class="eyebrow">SOURCE REFERENCE</span><h2 id="source-title">原图对照</h2></div><button id="close-dialog" class="dialog-close" aria-label="关闭原图">×</button></div><p class="dialog-hint">以下为上传截图中的原始题目区域，答案与文字以原图为准。</p><div id="source-images"></div></dialog>
 </body>
 </html>
