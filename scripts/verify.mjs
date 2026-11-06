@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import { importBank } from './import-bank.mjs';
+import {readEnglish} from './import-english.mjs';
 const context = { window: {} };
 vm.runInNewContext(fs.readFileSync('questions.js', 'utf8'), context);
 const bank = context.window.QUESTION_BANK;
@@ -37,6 +38,8 @@ for (const [i, q] of questions.entries()) {
   }
 }
 assert.equal(sourceLines.size, 475);
+assert.equal(questions.find(q => q.id === 'chapter-6-q7').answer, '6000', 'Preserve manual answer correction');
+assert.equal(questions.find(q => q.id === 'chapter-6-q7').correction.originalAnswer, '8000', 'Preserve original answer provenance');
 const get = id => questions.find(q => q.id === id);
 assert.equal(get('chapter-10-q14').answer, 'EADBC', 'Preserve product claim ordering');
 assert.equal(get('chapter-10-q19').answer, 'CEADB', 'Preserve patent writing ordering');
@@ -51,7 +54,39 @@ assert.equal(get('chapter-12-q14').answer, 'AC', 'Read answers from multiple par
 assert(get('chapter-9-q46').note, 'Flag duplicated numbering in source');
 assert(!fs.readdirSync('sources').some(f => /\.(jpe?g|png)$/i.test(f)), 'Old screenshot assets remain');
 assert(fs.readFileSync('.gitattributes', 'utf8').includes('sources/*.txt -text'), 'Source byte preservation rule missing');
-for (const file of ['index.html', 'style.css', 'app.js', 'questions.js', 'favicon.svg']) assert(fs.existsSync(file));
+for (const file of ['index.html', 'style.css', 'app.js', 'questions.js', 'english-questions.js', 'courses.js', 'favicon.svg', 'answer-overrides.json']) assert(fs.existsSync(file));
 assert(!/CSDN|原图|截图/.test(fs.readFileSync('index.html', 'utf8')), 'Old source text remains');
 assert(!fs.readFileSync('Dockerfile', 'utf8').includes('game.js'));
-console.log(`Verified ${questions.length} questions, ${categories.length} chapters, ${sourceLines.size} original source blocks, all 5 question types and source hashes.`);
+vm.runInNewContext(fs.readFileSync('english-questions.js', 'utf8'), context);
+vm.runInNewContext(fs.readFileSync('courses.js', 'utf8'), context);
+const english = context.window.ENGLISH_QUESTION_BANK;
+assert.equal(JSON.stringify(english), JSON.stringify(readEnglish()));
+assert.equal(english.questions.length, 200);
+assert.equal(english.categories.length, 40);
+assert.equal(new Set(english.categories.map(c => c.group)).size, 10);
+assert.equal(english.meta.correctAnswersOnly, true);
+assert.equal(english.meta.complete, true);
+assert(/^[a-f0-9]{64}$/.test(english.meta.inputSha256));
+const englishIds = new Set();
+const typeCounts = {};
+for (const [i, q] of english.questions.entries()) {
+  assert.equal(q.index, i + 1);
+  assert(!englishIds.has(q.id)); englishIds.add(q.id);
+  assert(english.categories.some(c => c.id === q.category));
+  assert(q.stem && q.answer && q.sources.length);
+  typeCounts[q.type] = (typeCounts[q.type] || 0) + 1;
+  if (q.type === '单选题') { assert(/^[A-Z]$/.test(q.answer)); assert(q.answer.charCodeAt(0) - 65 < q.options.length); }
+  else if (q.type === '判断题') assert(['正确', '错误'].includes(q.answer));
+  else if (q.type === '填空题') { assert(q.blanks.length); assert.equal(q.answer, q.blanks.length === 1 ? q.blanks[0] : q.blanks.map((v,i) => `${i+1}. ${v}`).join('\n')); }
+  else assert.fail(`Unexpected English question type: ${q.type}`);
+  for (const source of q.sources) { assert(source.url.startsWith('https://www.xuetangx.com/learn/space/')); assert(source.raw.includes(q.stem)); }
+}
+assert.deepEqual(typeCounts, {单选题: 72, 判断题: 111, 填空题: 17});
+assert(!/"(?:resume|iconClass|iconBackground|my_count|my_answers|is_right)"/.test(JSON.stringify(english)));
+assert(english.categories.every(c => !/[\uE000-\uF8FF]/.test(c.title + c.group)));
+assert.equal(context.window.COURSES.length, 2);
+assert.equal(context.window.COURSES.reduce((sum, c) => sum + c.bank.questions.length, 0), 675);
+const html = fs.readFileSync('index.html', 'utf8'), docker = fs.readFileSync('Dockerfile', 'utf8');
+for (const file of ['app.js', 'questions.js', 'english-questions.js', 'courses.js', 'style.css']) { assert(html.includes(file)); assert(docker.includes(file)); }
+assert(docker.includes('COPY data/'));
+console.log(`Verified 2 courses, 675 questions, 52 lessons; original source hashes, manual correction, all imported English answers and deployment assets.`);

@@ -4432,10 +4432,14 @@ window.QUESTION_BANK = {
           "lineStart": 18,
           "lineEnd": 19,
           "url": "https://github.com/Oldmemory1/BIT-Information-Retrieval-and-Scientific-Writing/blob/main/6.5%E4%B9%A0%E9%A2%98.txt#L18-L19",
-          "raw": "7.文献综述是博士士论文的重要附件，字数一般要求为不少于[6000]字"
+          "raw": "7.文献综述是博士士论文的重要附件，字数一般要求为不少于[8000]字"
         }
       ],
-      "index": 182
+      "index": 182,
+      "correction": {
+        "originalAnswer": "8000",
+        "note": "按现有题库中的手动校订保留；来源快照仍保留原始答案。"
+      }
     },
     {
       "id": "chapter-6-q8",

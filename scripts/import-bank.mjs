@@ -99,6 +99,13 @@ export function importBank() {
     }
   }
   questions.forEach((q, i) => q.index = i + 1);
+  const overrides = JSON.parse(fs.readFileSync('answer-overrides.json', 'utf8'));
+  for (const [id, override] of Object.entries(overrides)) {
+    const q = questions.find(q => q.id === id);
+    if (!q || typeof override.answer !== 'string' || !override.answer.trim()) throw new Error(`Invalid answer correction: ${id}`);
+    q.correction = {originalAnswer: q.answer, note: override.note || '站内答案校订'};
+    q.answer = override.answer;
+  }
   return {
     meta: { repository: manifest.repository, author: 'Oldmemory1', sourceCount, sourceFiles: manifest.chapters.length, importedOn: manifest.importedOn, warnings },
     categories: manifest.chapters.map(c => ({id:c.id, code:c.code, title:c.title, file:c.file})),
